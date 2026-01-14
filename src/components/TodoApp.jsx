@@ -1,20 +1,28 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './TodoApp.css'
 
 export default function TodoApp() {
 
-    // lista de tarefas
-
-    const [todos, setTodos] = useState([]);
+    // estado da lista de tarefas + recuperando tarefas salvas no localStorage
+    const [todos, setTodos] = useState(() => {
+        // savedTodos (var temporária) recebe a string salva no localStorage
+        const savedTodos = localStorage.getItem("todos");
+        // se existir algo salvo, converte a string em array de tarefas
+        // caso contrário, retorna um array vazio
+        return savedTodos ? JSON.parse(savedTodos) : []; 
+    });
 
     // estado de texto do input
-
     const [inputValue, setInputValue] = useState("");
 
-    // adicionar tarefa
+    // salvar tarefas a cada mudança de "todos" no localStorage
+    useEffect(() => {
+        localStorage.setItem("todos", JSON.stringify(todos));
+    }, [todos]);
 
+    // adicionar tarefa
     const handleSubmit = (e) => {
-        e.preventDefault();
+        e.preventDefault(); // prevenir comportamento padrão de recarregar a página
 
         if (inputValue.trim() !== "") {
 
@@ -23,33 +31,28 @@ export default function TodoApp() {
                 text: inputValue,
             };
 
-            setTodos((prevTodos) => [...prevTodos, newTodo]);
-
-            setInputValue("");
+            setTodos((prevTodos) => [...prevTodos, newTodo]); 
+            setInputValue(""); // limpa input
         }
     };
 
     // deletar tarefa
-
     function handleDelete(id) {
-        
+
         setTodos(prev => prev.filter(item => item.id !== id))  
     };
 
     return (
         <div className="todo-app">
-
             <h2 className="title">LISTA DE TAREFAS</h2>
 
             {/* form para adicionar tarefas */}
-
             <form onSubmit={handleSubmit} className="form-container">
                 <input type="text" className="input-field" value={inputValue} onChange={(e) => setInputValue(e.target.value)} placeholder='Adicione uma tarefa...' />
                 <input type="submit" className="add-button" value="Adicionar" />
             </form>
 
             {/* lista de tarefas */}
-
             {todos.length === 0 && <p className="empty">Não há tarefas</p>}
 
             <ul className="todo-list">
@@ -62,7 +65,6 @@ export default function TodoApp() {
                     </li>
                 ))}
             </ul>
-
         </div>
     );
 }
