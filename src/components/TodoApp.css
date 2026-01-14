@@ -80,16 +80,25 @@ body {
 .todo-item {
     background-color: white;
     border: 1px solid #ddd;
+    border-left: 4px solid #242424;
     border-radius: 3px;
-    padding: 4px 8px;
+    padding: 4px 6px;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 5px;
     font-size: 15px;
 }
 
-.input-check {
-    width: 20px;
-    height: 15px;
+.delete-button {
+    background-color: #242424;
+    padding: 2px 4px;
+    border-radius: 3px;
+    border: none;
     cursor: pointer;
+}
+
+.fa-solid {
+    color: white;
+    font-size: 13px;
 }

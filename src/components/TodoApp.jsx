@@ -29,6 +29,13 @@ export default function TodoApp() {
         }
     };
 
+    // deletar tarefa
+
+    function handleDelete(id) {
+        
+        setTodos(prev => prev.filter(item => item.id !== id))  
+    };
+
     return (
         <div className="todo-app">
 
@@ -48,8 +55,10 @@ export default function TodoApp() {
             <ul className="todo-list">
                 {todos.map((todo) => (
                     <li key={todo.id} className="todo-item">
-                        <input type="checkbox" className="input-check" />
                         {todo.text}
+                        <button className="delete-button" onClick={() => handleDelete(todo.id)}>
+                            <i className="fa-solid fa-trash"></i>
+                        </button>
                     </li>
                 ))}
             </ul>
